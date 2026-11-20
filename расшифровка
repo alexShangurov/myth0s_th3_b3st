@@ -1,0 +1,2 @@
+openssl enc -d -aes-256-cbc -pbkdf2 -in secret.txt.enc -out secret.txt
+
