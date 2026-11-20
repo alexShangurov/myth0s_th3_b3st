@@ -1,0 +1,12 @@
+# 🐍 Python-веб (Flask/FastAPI). Положи как docker-compose.yml рядом с кодом.
+# Нужен Dockerfile-python рядом (см. Dockerfile-python) и requirements.txt
+services:
+  app:
+    build: { context: ., dockerfile: Dockerfile-python }
+    ports: ["5000:5000"]          # СНАРУЖИ:ВНУТРИ — внешний порт не меняем, его знает чекер!
+    volumes: ["./data:/app/data"] # данные живут на диске хоста → переживают пересборку
+    restart: unless-stopped       # упал — сам поднимется (SLA!)
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:5000/')"]
+      interval: 15s
+      retries: 3

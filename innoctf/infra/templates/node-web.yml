@@ -1,0 +1,9 @@
+# 🟩 Node.js. Рядом package.json и index.js
+services:
+  app:
+    image: node:20-slim
+    working_dir: /app
+    volumes: ["./:/app"]
+    command: sh -c "npm ci && node index.js"
+    ports: ["3000:3000"]
+    restart: unless-stopped

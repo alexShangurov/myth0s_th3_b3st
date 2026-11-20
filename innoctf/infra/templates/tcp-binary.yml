@@ -1,0 +1,12 @@
+# ⚙️ Бинарник/скрипт, общающийся через stdin/stdout (pwn, nc-сервисы).
+# socat вешает его на порт: каждое подключение = новый процесс.
+services:
+  app:
+    image: debian:bookworm-slim
+    working_dir: /srv
+    volumes: ["./:/srv"]
+    command: >
+      sh -c "apt-get update -qq && apt-get install -y -qq socat >/dev/null &&
+             socat TCP-LISTEN:31337,reuseaddr,fork EXEC:/srv/service,stderr"
+    ports: ["31337:31337"]
+    restart: unless-stopped
